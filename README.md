@@ -1,4 +1,4 @@
-### <h1>ADVANCE FILE SHARING BOT 🤖</h1>
+### <h1>ADVANCE FILE SHARING BOT V2 🤖</h1>
 <img src="https://telegra.ph/file/ff8fbe7d67a3c7492c353.jpg">
 <blockquote><b><i>CREDIT: INSPIRED FROM <a href="https://t.me/CodeXBotz">Code 𝕏 Botz</a></i></b><br>
 <b>THIS IS AN ADVANCE FILE SHARE BOT BY: <a href="https://t.me/Shidoteshika1">King 🜲</a>. HERE ONLY THE HIGHLIGHTTED FEATURES ARE MENTIONED BELOW ;</b></blockquote>
