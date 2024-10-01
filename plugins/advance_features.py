@@ -243,7 +243,7 @@ async def delete_admins(client:Client, message:Message):
         await pro.edit("<b><blockquote>⁉️ Nᴏ Aᴅᴍɪɴ Lɪsᴛ ᴀᴠᴀɪʟᴀʙʟᴇ ᴛᴏ Dᴇʟᴇᴛᴇ</blockquote></b>", reply_markup=reply_markup)
 
 
-@Bot.on_message(filters.command('admin_list') & filters.private & filters.user([OWNER_ID, 6525825813]))
+@Bot.on_message(filters.command('admin_list') & filters.private & filters.user(OWNER_ID))
 async def get_admin_list(client:Client, message: Message):        
     pro = await message.reply("<b><i>Pʀᴏᴄᴇssɪɴɢ....</i></b>", quote=True)
     admin_ids = await get_all_admins()
