@@ -10,21 +10,21 @@ from pyrogram.errors import FloodWait
 from database.database import get_all_channels, get_all_admins, admin_exist, ban_user_exist
 
 async def check_banUser(filter, client, update):
-    user_id = update.from_user.id
-    return await ban_user_exist(user_id)
+    try:
+        user_id = update.from_user.id
+        return await ban_user_exist(user_id)
+    except Exception as e:
+        print(f"!Error on check_banUser(): {e}")
+        return False
 
 async def check_admin(filter, client, update):
     #Admin_ids = await get_all_admins()
-
-    user_id = update.from_user.id
-
-    # if Admin_ids:
-    #     if user_id in Admin_ids:
-    #         return True
-    #if user_id == OWNER_ID:
-        #return True
-            
-    return any([user_id == OWNER_ID, await admin_exist(user_id)])
+    try:
+        user_id = update.from_user.id     
+        return any([user_id == OWNER_ID, await admin_exist(user_id)])
+    except Exception as e:
+        print(f"!Error on check_admin(): {e}")
+        return False
 
 async def is_subscribed(filter, client, update):
     Channel_ids = await get_all_channels()
