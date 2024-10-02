@@ -16,7 +16,7 @@ import sys
 from plugins.advance_features import convert_time, auto_del_notification, delete_message
 from plugins.FORMATS import START_MSG, FORCE_MSG, BAN_TXT
 
-@Bot.on_message(filters.command('start') & filters.private & subscribed & ~banUser)
+@Bot.on_message(filters.command('start') & filters.private & ~banUser & subscribed)
 async def start_command(client: Client, message: Message): 
     await message.reply_chat_action(ChatAction.CHOOSE_STICKER)
     id = message.from_user.id  
