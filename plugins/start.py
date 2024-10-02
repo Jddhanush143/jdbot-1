@@ -151,20 +151,14 @@ WAIT_MSG = """"<b>Processing ...</b>"""
 #=====================================================================================##   
 
 
+# Global dictionary to store channel data
+channel_data_cache = {}
+
 @Bot.on_message(filters.command('start') & filters.private & ~banUser)
 async def not_joined(client: Client, message: Message):
     temp = await message.reply(f"<b>??</b>")
 	
     user_id = message.from_user.id
-    #if await ban_user_exist(user_id):
-        #return await message.reply(text=BAN_TXT, message_effect_id=5046589136895476101)
-	    
-    
-    excl = '! '
-        
-    #banned_users = await get_ban_users()
-    #if user_id in banned_users:
-        #return await temp.edit(BAN_TXT)
                
     channels = await get_all_channels()
     buttons = []
@@ -173,23 +167,23 @@ async def not_joined(client: Client, message: Message):
     try:
         for id in channels:
             if not await is_userJoin(client, user_id, id):
-                try:
-                    data = await client.get_chat(id)
-                    link = data.invite_link 
-                    cname = data.title
+                if id in channel_data_cache:
+                    cname, link = channel_data_cache[id]
+                else:
+                    try:
+                        data = await client.get_chat(id)
+                        link = data.invite_link 
+                        cname = data.title
+			    
+                        channel_data_cache[id] = (cname, link)    
+                    except Exception as e:
+                        print(f"Can't Export Channel Name and Link..., Please Check If the Bot is admin in the FORCE SUB CHANNELS:\nProvided Force sub Channel:- {id}")
+                        return await temp.edit(f"<blockquote><b><i>! Eʀʀᴏʀ, Cᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ ᴛᴏ sᴏʟᴠᴇ ᴛʜᴇ ɪssᴜᴇs @Shidoteshika1</i></b></blockquote>\n\n<blockquote><b>Rᴇᴀsᴏɴ:</b> {e}</blockquote>")
+                                                              
+                buttons.append([InlineKeyboardButton(text=cname, url=link)])
+                count += 1
+                await temp.edit(f"<b>{'! '*count}</b>")
                                                 
-                    if not link:
-                        await client.export_chat_invite_link(id)
-                        link = (await client.get_chat(id)).invite_link 
-                                                        
-                    buttons.append([InlineKeyboardButton(text=cname, url=link)])
-                    count += 1
-                    await temp.edit(f'<b>{excl*count}</b>')
-                                                
-                except Exception as e:
-                    print(f"Can't Export Channel Name and Link..., Please Check If the Bot is admin in the FORCE SUB CHANNELS:\nProvided Force sub Channel:- {id}")
-                    return await temp.edit(f"<blockquote><b><i>! Eʀʀᴏʀ, Cᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ ᴛᴏ sᴏʟᴠᴇ ᴛʜᴇ ɪssᴜᴇs @Shidoteshika1</i></b></blockquote>\n\n<blockquote><b>Rᴇᴀsᴏɴ:</b> {e}</blockquote>")
-
         try:
             buttons.append([InlineKeyboardButton(text='♻️ Tʀʏ Aɢᴀɪɴ', url=f"https://t.me/{client.username}?start={message.command[1]}")])
         except IndexError:
@@ -219,7 +213,7 @@ async def not_joined(client: Client, message: Message):
     except Exception as e:
         print(f"Unable to perform forcesub buttons reason : {e}")
         return await temp.edit(f"<blockquote><b><i>! Eʀʀᴏʀ, Cᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ ᴛᴏ sᴏʟᴠᴇ ᴛʜᴇ ɪssᴜᴇs @Shidoteshika1</i></b></blockquote>\n\n<blockquote><b>Rᴇᴀsᴏɴ:</b> {e}</blockquote>")
-  
+
 
 #=====================================================================================##
 #.........Extra Fetures .......#
