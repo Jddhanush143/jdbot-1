@@ -201,7 +201,6 @@ async def not_joined(client: Client, message: Message):
                 count=count
             ),
             reply_markup=InlineKeyboardMarkup(buttons),
-            #message_effect_id=5107584321108051014, # 👍
             #quote=True,
             #disable_web_page_preview=True
         )
