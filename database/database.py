@@ -74,12 +74,6 @@ async def set_channel_button(value: bool):
     else:
         channel_button_data.insert_one({'value': value})
 
-async def set_request_forcesub(value: bool):
-    existing = request_forcesub_data.find_one({})
-    if existing:
-        request_forcesub_data.update_one({}, {'$set': {'value': value}})
-    else:
-        request_forcesub_data.insert_one({'value': value})
 
 async def get_auto_delete():
     data = auto_delete_data.find_one({})
@@ -101,12 +95,6 @@ async def get_protect_content():
 
 async def get_channel_button():
     data = channel_button_data.find_one({})
-    if data:
-        return data.get('value', False)
-    return False
-
-async def get_request_forcesub():
-    data = request_forcesub_data.find_one({})
     if data:
         return data.get('value', False)
     return False
@@ -192,23 +180,3 @@ async def get_ban_users():
     user_ids = [doc['_id'] for doc in users_docs]
     return user_ids
 
-
-"""# autho User functions
-async def ban_user_exist(user_id: int):
-    found = banned_user_data.find_one({'_id': user_id})
-    return bool(found)
-    
-async def add_ban_user(user_id: int):
-    if not await ban_user_exist(user_id):
-        banned_user_data.insert_one({'_id': user_id})
-        return
-
-async def del_ban_user(user_id: int):
-    if await ban_user_exist(user_id):
-        banned_user_data.delete_one({'_id': user_id})
-        return
-
-async def get_ban_users():
-    users_docs = banned_user_data.find()
-    user_ids = [doc['_id'] for doc in users_docs]
-    return user_ids"""

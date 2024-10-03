@@ -1,10 +1,10 @@
-#telegram user_id: @Shidoteshika1
+#telegram username: @Shidoteshika1
 
 from bot import Bot
 import asyncio
 from pyrogram.enums import ParseMode, ChatAction
 from helper_func import is_admin, banUser
-from plugins.FORMATS import autodel_cmd_pic, files_cmd_pic, on_txt, off_txt, FILES_CMD_TXT, AUTODEL_CMD_TXT, BAN_TXT
+from plugins.FORMATS import autodel_cmd_pic, files_cmd_pic, on_txt, off_txt, FILES_CMD_TXT, AUTODEL_CMD_TXT
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from config import OWNER_ID
 from pyrogram import Client, filters
@@ -158,7 +158,6 @@ async def get_forcesub(client:Client, message: Message):
 
 
 #Commands for adding Admins by Owner
-
 @Bot.on_message(filters.command('add_admins') & filters.private & filters.user(OWNER_ID))
 async def add_admins(client:Client, message:Message):        
     pro = await message.reply("<b><i>Pʀᴏᴄᴇssɪɴɢ....</i></b>", quote=True)
@@ -254,7 +253,7 @@ async def get_admin_list(client:Client, message: Message):
             await message.reply_chat_action(ChatAction.TYPING)
             try:
                 user = await client.get_users(id)
-                user_link = f"tg://user?id={id}"
+                user_link = f"tg://openmessage?user_id={id}"
                 first_name = user.first_name if user.first_name else "No first name !"
                     
                 admin_list += f"<b><blockquote>NAME: <a href = {user_link}>{first_name}</a>\n(ID: <code>{id}</code>)</blockquote></b>\n\n"
@@ -370,7 +369,7 @@ async def get_banuser_list(client:Client, message: Message):
             await message.reply_chat_action(ChatAction.TYPING)
             try:
                 user = await client.get_users(id)
-                user_link = f"tg://user?id={id}"
+                user_link = f"tg://openmessage?user_id={id}"
                 first_name = user.first_name if user.first_name else "No first name !"
                     
                 banuser_list += f"<b><blockquote>NAME: <a href = {user_link}>{first_name}</a>\n(ID: <code>{id}</code>)</blockquote></b>\n\n"
@@ -456,15 +455,9 @@ async def delete_message(msg, delay_time):
 #=====================================================================================##
 
 
-@Bot.on_message(~banUser & filters.command('files') & filters.private)
+@Bot.on_message(filters.command('files') & filters.private & ~banUser)
 async def files_commands(client: Client, message: Message):
     await message.reply_chat_action(ChatAction.TYPING)
-    
-    #id = message.from_user.id
-        
-    #banned_users = await get_ban_users()
-    #if id in banned_users:
-        #return await message.reply(BAN_TXT)
         
     try:
         protect_content = hide_caption = channel_button = off_txt

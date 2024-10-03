@@ -44,7 +44,7 @@ class Bot(Client):
             sys.exit()
 
         self.set_parse_mode(ParseMode.HTML)
-        self.LOGGER(__name__).info(f"[CREDITS: Inspired from:- @CodeXBotz, more advanced features added by:- @Shidoteshika1]")
+        self.LOGGER(__name__).info(f"[CREDITS::- @CodeXBotz, More advanced features added by:- @Shidoteshika1]")
         self.LOGGER(__name__).info(f"{self.name} Bot Running..!")
         self.LOGGER(__name__).info(f"OPERATION SUCCESSFULL ✅")
         #web-response
@@ -53,10 +53,8 @@ class Bot(Client):
         bind_address = "0.0.0.0"
         await web.TCPSite(app, bind_address, PORT).start()
 
-        #s_msg = await self.send_message(chat_id = LOG_CHNL, text = f"<b>🤖 <a href='t.me/{self.username}'>{self.name}</a> bot Restarted...</b>", disable_web_page_preview=True)
-        await self.send_message(OWNER_ID, text = f"<b><blockquote>🤖 Bᴏᴛ Rᴇsᴛᴀʀᴛᴇᴅ ♻️</blockquote></b>")
-        #await asyncio.sleep(30)
-        #await s_msg.delete()
+        try: await self.send_message(OWNER_ID, text = f"<b><blockquote>🤖 Bᴏᴛ Rᴇsᴛᴀʀᴛᴇᴅ ♻️</blockquote></b>")
+        except: pass
 
     async def stop(self, *args):
         await super().stop()

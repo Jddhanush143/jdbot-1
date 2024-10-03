@@ -15,7 +15,7 @@ from database.database import *
 import subprocess
 import sys
 from plugins.advance_features import convert_time, auto_del_notification, delete_message
-from plugins.FORMATS import START_MSG, FORCE_MSG, BAN_TXT
+from plugins.FORMATS import START_MSG, FORCE_MSG
 
 @Bot.on_message(filters.command('start') & filters.private & ~banUser & subscribed)
 async def start_command(client: Client, message: Message): 
