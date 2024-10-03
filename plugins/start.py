@@ -22,15 +22,9 @@ async def start_command(client: Client, message: Message):
     await message.reply_chat_action(ChatAction.CHOOSE_STICKER)
     id = message.from_user.id  
     
-    #banned_users = await get_ban_users()
-    #if await ban_user_exist(id):
-        #return await message.reply(text=BAN_TXT, message_effect_id=5046589136895476101)
-    
     if not await present_user(id):
-        try:
-            await add_user(id)
-        except:
-            pass
+        try: await add_user(id)
+        except: pass
                 
     text = message.text        
     if len(text)>7:
@@ -63,24 +57,19 @@ async def start_command(client: Client, message: Message):
                         break
                             
         elif len(argument) == 2:
-            try:
-                ids = [int(int(argument[1]) / abs(client.db_channel.id))]
-            except:
-                return
+            try: ids = [int(int(argument[1]) / abs(client.db_channel.id))]
+            except: return
                     
         last_message = None
         await message.reply_chat_action(ChatAction.UPLOAD_DOCUMENT)  
         
-        try:
-            messages = await get_messages(client, ids)
-        except:
-            return await message.reply("<b><i>Sᴏᴍᴇᴛʜɪɴɢ ᴡᴇɴᴛ ᴡʀᴏɴɢ..!</i></b>")
+        try: messages = await get_messages(client, ids)
+        except: return await message.reply("<b><i>Sᴏᴍᴇᴛʜɪɴɢ ᴡᴇɴᴛ ᴡʀᴏɴɢ..!</i></b>")
             
         AUTO_DEL = await get_auto_delete(); DEL_TIMER = await get_del_timer()
         HIDE_CAPTION = await get_hide_caption(); CHNL_BTN = await get_channel_button(); PROTECT_MODE = await get_protect_content()   
             
-        if CHNL_BTN:
-            button_name, button_link = await get_channel_button_link()
+        if CHNL_BTN: button_name, button_link = await get_channel_button_link()
             
         # temp_msg = await message.reply("<b>. . . </b>")
         # await temp_msg.delete()
@@ -89,10 +78,8 @@ async def start_command(client: Client, message: Message):
             if bool(CUSTOM_CAPTION) & bool(msg.document):
                 caption = CUSTOM_CAPTION.format(previouscaption = "" if not msg.caption else msg.caption.html, filename = msg.document.file_name)
             elif HIDE_CAPTION:
-                if msg.document or msg.audio:
-                    caption = ""
-                else:
-                    caption = "" if not msg.caption else msg.caption.html
+                if msg.document or msg.audio: caption = ""
+                else: caption = "" if not msg.caption else msg.caption.html
             else:
                 caption = "" if not msg.caption else msg.caption.html
 
@@ -102,23 +89,24 @@ async def start_command(client: Client, message: Message):
                 reply_markup = msg.reply_markup   
                     
             try:
-                copied_msg = await msg.copy(chat_id=id, caption = caption, parse_mode = ParseMode.HTML, reply_markup = reply_markup, protect_content=PROTECT_MODE)
+                copied_msg = await msg.copy(chat_id=id, caption=caption, parse_mode=ParseMode.HTML, reply_markup=reply_markup, protect_content=PROTECT_MODE)
                 await asyncio.sleep(0.1)
-                asyncio.create_task(delete_message(copied_msg, DEL_TIMER))
-                if idx == len(messages) - 1 and AUTO_DEL: 
-                        last_message = copied_msg
+
+                if AUTO_DEL:
+                    asyncio.create_task(delete_message(copied_msg, DEL_TIMER))
+                    if idx == len(messages) - 1: last_message = copied_msg
+
             except FloodWait as e:
                 await asyncio.sleep(e.x)
-                copied_msg = await msg.copy(chat_id=id, caption = caption, parse_mode = ParseMode.HTML, reply_markup = reply_markup, protect_content=PROTECT_MODE)
+                copied_msg = await msg.copy(chat_id=id, caption=caption, parse_mode=ParseMode.HTML, reply_markup=reply_markup, protect_content=PROTECT_MODE)
                 await asyncio.sleep(0.1)
-                asyncio.create_task(delete_message(copied_msg, DEL_TIMER))
-                if idx == len(messages) - 1 and AUTO_DEL:
-                    last_message = copied_msg
+
+                if AUTO_DEL:
+                    asyncio.create_task(delete_message(copied_msg, DEL_TIMER))
+                    if idx == len(messages) - 1: last_message = copied_msg
                         
         if AUTO_DEL and last_message:
-                asyncio.create_task(auto_del_notification(client, last_message, DEL_TIMER, transfer))
-                
-        return
+            asyncio.create_task(auto_del_notification(client.username, last_message, DEL_TIMER, transfer))
             
     else:
         # temp_msg = await message.reply("<b>. . .</b>")
@@ -135,25 +123,19 @@ async def start_command(client: Client, message: Message):
                 id = message.from_user.id
             ),
             reply_markup = reply_markup,
-	    message_effect_id=5104841245755180586 #🔥
+	        message_effect_id=5104841245755180586 #🔥
             #quote = True
         )
-        try:
-            await message.delete()
-        except:
-            pass
-        return
+        try: await message.delete()
+        except: pass
 
    
 #=====================================================================================##
-
-WAIT_MSG = """"<b>Processing ...</b>"""
-
+#------------- HANDLE FORCE MESSAGE -------------
 #=====================================================================================##   
 
-
 # Global dictionary to store channel data
-channel_data_cache = {}
+chat_data_cache = {}
 
 @Bot.on_message(filters.command('start') & filters.private & ~banUser)
 async def not_joined(client: Client, message: Message):
@@ -168,15 +150,15 @@ async def not_joined(client: Client, message: Message):
     try:
         for id in channels:
             if not await is_userJoin(client, user_id, id):
-                if id in channel_data_cache:
-                    cname, link = channel_data_cache[id]
+                if id in chat_data_cache:
+                    cname, link = chat_data_cache[id]
                 else:
                     try:
                         data = await client.get_chat(id)
                         link = data.invite_link 
                         cname = data.title
 			    
-                        channel_data_cache[id] = (cname, link)    
+                        chat_data_cache[id] = (cname, link)    
                     except Exception as e:
                         print(f"Can't Export Channel Name and Link..., Please Check If the Bot is admin in the FORCE SUB CHANNELS:\nProvided Force sub Channel:- {id}")
                         return await temp.edit(f"<blockquote><b><i>! Eʀʀᴏʀ, Cᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ ᴛᴏ sᴏʟᴠᴇ ᴛʜᴇ ɪssᴜᴇs @Shidoteshika1</i></b></blockquote>\n\n<blockquote><b>Rᴇᴀsᴏɴ:</b> {e}</blockquote>")
@@ -205,10 +187,8 @@ async def not_joined(client: Client, message: Message):
             #disable_web_page_preview=True
         )
                 
-        try:
-            await message.delete()
-        except:
-            pass
+        try: await message.delete()
+        except: pass
                         
     except Exception as e:
         print(f"Unable to perform forcesub buttons reason : {e}")

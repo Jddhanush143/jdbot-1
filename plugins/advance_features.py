@@ -47,8 +47,7 @@ async def add_forcesub(client:Client, message:Message):
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("Cʟᴏsᴇ ✖️", callback_data = "close")]])
     
     if not fsubs:
-        await pro.edit("<b>Yᴏᴜ ɴᴇᴇᴅ ᴛᴏ Aᴅᴅ ᴄʜᴀɴɴᴇʟ ɪᴅs\n<blockquote><u>EXAMPLE</u> :\n/add_fsub [channel_ids] :</b> ʏᴏᴜ ᴄᴀɴ ᴀᴅᴅ ᴏɴᴇ ᴏʀ ᴍᴜʟᴛɪᴘʟᴇ ᴄʜᴀɴɴᴇʟ ɪᴅ ᴀᴛ ᴀ ᴛɪᴍᴇ.</blockquote>", reply_markup=reply_markup)
-        return
+        return await pro.edit("<b>Yᴏᴜ ɴᴇᴇᴅ ᴛᴏ Aᴅᴅ ᴄʜᴀɴɴᴇʟ ɪᴅs\n<blockquote><u>EXAMPLE</u> :\n/add_fsub [channel_ids] :</b> ʏᴏᴜ ᴄᴀɴ ᴀᴅᴅ ᴏɴᴇ ᴏʀ ᴍᴜʟᴛɪᴘʟᴇ ᴄʜᴀɴɴᴇʟ ɪᴅ ᴀᴛ ᴀ ᴛɪᴍᴇ.</blockquote>", reply_markup=reply_markup)
 
     channel_list = ""
     for id in fsubs:
@@ -390,16 +389,9 @@ async def get_banuser_list(client:Client, message: Message):
 DEL_MSG = """<b>⚠️ Dᴜᴇ ᴛᴏ Cᴏᴘʏʀɪɢʜᴛ ɪssᴜᴇs....
 <blockquote>Yᴏᴜʀ ғɪʟᴇs ᴡɪʟʟ ʙᴇ ᴅᴇʟᴇᴛᴇᴅ ᴡɪᴛʜɪɴ <a href="https://t.me/{username}">{time}</a>. Sᴏ ᴘʟᴇᴀsᴇ ғᴏʀᴡᴀʀᴅ ᴛʜᴇᴍ ᴛᴏ ᴀɴʏ ᴏᴛʜᴇʀ ᴘʟᴀᴄᴇ ғᴏʀ ғᴜᴛᴜʀᴇ ᴀᴠᴀɪʟᴀʙɪʟɪᴛʏ.</blockquote></b>"""
 
-@Bot.on_message(~banUser & filters.command('auto_del') & filters.private)
+@Bot.on_message(filters.command('auto_del') & filters.private & ~banUser)
 async def autoDelete_settings(client, message):
     await message.reply_chat_action(ChatAction.TYPING)
-    
-    #id = message.from_user.id
-        
-    #banned_users = await get_ban_users()
-    #if id in banned_users:
-            #return await message.reply(BAN_TXT)
-
     try:
             timer = convert_time(await get_del_timer())
             if await get_auto_delete():
@@ -423,37 +415,40 @@ async def autoDelete_settings(client, message):
             await message.reply(f"<b>! Eʀʀᴏʀ Oᴄᴄᴜʀᴇᴅ..\n<blockquote>Rᴇᴀsᴏɴ:</b> {e}</blockquote><b><i>Cᴏɴᴛᴀɴᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ: @Shidoteshika1</i></b>", reply_markup=reply_markup)
             
 
-async def auto_del_notification(client, msg, delay_time, transfer):
-    AUTO_DEL = await get_auto_delete() #; DEL_TIMER = await get_del_timer()
-    if AUTO_DEL: 
-        temp = await msg.reply_text(DEL_MSG.format(username=client.username, time=convert_time(delay_time)), disable_web_page_preview = True) 
-        await asyncio.sleep(delay_time)
-        try:
-                if transfer:
-                        try:
-                                name = "♻️ Cʟɪᴄᴋ Hᴇʀᴇ"; link = f"https://t.me/{client.username}?start={transfer}"
-                                button = [[InlineKeyboardButton(text=name, url=link), InlineKeyboardButton(text="Cʟᴏsᴇ ✖️", callback_data = "close")]]
-                                await temp.edit_text(text=f"<b>Pʀᴇᴠɪᴏᴜs Mᴇssᴀɢᴇ ᴡᴀs Dᴇʟᴇᴛᴇᴅ 🗑\n<blockquote>Iғ ʏᴏᴜ ᴡᴀɴᴛ ᴛᴏ ɢᴇᴛ ᴛʜᴇ ғɪʟᴇs ᴀɢᴀɪɴ, ᴛʜᴇɴ ᴄʟɪᴄᴋ: [<a href={link}>{name}</a>] ʙᴜᴛᴛᴏɴ ʙᴇʟᴏᴡ ᴇʟsᴇ ᴄʟᴏsᴇ ᴛʜɪs ᴍᴇssᴀɢᴇ.</blockquote></b>", reply_markup=InlineKeyboardMarkup(button), disable_web_page_preview = True)
-                        except Exception as e:
-                                await temp.edit_text(f"<b><blockquote>Pʀᴇᴠɪᴏᴜs Mᴇssᴀɢᴇ ᴡᴀs Dᴇʟᴇᴛᴇᴅ 🗑</blockquote></b>")
-                                print(f"Error occured while editing the Delete message: {e}")
-                else:
-                        await temp.edit_text(f"<b><blockquote>Pʀᴇᴠɪᴏᴜs Mᴇssᴀɢᴇ ᴡᴀs Dᴇʟᴇᴛᴇᴅ 🗑</blockquote></b>")
-        except Exception as e:
+async def auto_del_notification(bot_username, msg, delay_time, transfer):
+    #AUTO_DEL = await get_auto_delete() #; DEL_TIMER = await get_del_timer()
+    #if AUTO_DEL: 
+    temp = await msg.reply_text(DEL_MSG.format(username=bot_username, time=convert_time(delay_time)), disable_web_page_preview = True) 
+
+    await asyncio.sleep(delay_time)
+    try:
+        if transfer:
+            try:
+                name = "♻️ Cʟɪᴄᴋ Hᴇʀᴇ"
+                link = f"https://t.me/{bot_username}?start={transfer}"
+                button = [[InlineKeyboardButton(text=name, url=link), InlineKeyboardButton(text="Cʟᴏsᴇ ✖️", callback_data = "close")]]
+
+                await temp.edit_text(text=f"<b>Pʀᴇᴠɪᴏᴜs Mᴇssᴀɢᴇ ᴡᴀs Dᴇʟᴇᴛᴇᴅ 🗑\n<blockquote>Iғ ʏᴏᴜ ᴡᴀɴᴛ ᴛᴏ ɢᴇᴛ ᴛʜᴇ ғɪʟᴇs ᴀɢᴀɪɴ, ᴛʜᴇɴ ᴄʟɪᴄᴋ: [<a href={link}>{name}</a>] ʙᴜᴛᴛᴏɴ ʙᴇʟᴏᴡ ᴇʟsᴇ ᴄʟᴏsᴇ ᴛʜɪs ᴍᴇssᴀɢᴇ.</blockquote></b>", reply_markup=InlineKeyboardMarkup(button), disable_web_page_preview = True)
+
+            except Exception as e:
+                await temp.edit_text(f"<b><blockquote>Pʀᴇᴠɪᴏᴜs Mᴇssᴀɢᴇ ᴡᴀs Dᴇʟᴇᴛᴇᴅ 🗑</blockquote></b>")
                 print(f"Error occured while editing the Delete message: {e}")
-        try:
-            await msg.delete()
-        except Exception as e:
-            print(f"Error occurred on auto_del_notification() : {e}")
+        else:
+            await temp.edit_text(f"<b><blockquote>Pʀᴇᴠɪᴏᴜs Mᴇssᴀɢᴇ ᴡᴀs Dᴇʟᴇᴛᴇᴅ 🗑</blockquote></b>")
+
+    except Exception as e:
+        print(f"Error occured while editing the Delete message: {e}")
+        await temp.edit_text(f"<b><blockquote>Pʀᴇᴠɪᴏᴜs Mᴇssᴀɢᴇ ᴡᴀs Dᴇʟᴇᴛᴇᴅ 🗑</blockquote></b>")
+
+    try: await msg.delete()
+    except Exception as e: print(f"Error occurred on auto_del_notification() : {e}")
            
 async def delete_message(msg, delay_time):
-    AUTO_DEL = await get_auto_delete()
-    if AUTO_DEL: 
-        await asyncio.sleep(delay_time)
-        try:
-            await msg.delete()
-        except Exception as e:
-            print(f"Error occurred on delete_message() : {e}")
+    #AUTO_DEL = await get_auto_delete()
+    #if AUTO_DEL: 
+    await asyncio.sleep(delay_time)
+    try: await msg.delete()
+    except Exception as e: print(f"Error occurred on delete_message() : {e}")
 
 
 #=====================================================================================##
