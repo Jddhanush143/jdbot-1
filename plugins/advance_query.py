@@ -54,11 +54,11 @@ def buttonStatus(pc_data: str, hc_data: str, cb_data: str) -> list:
 #functin help to checking if a user is admin or owner before processing query....
 async def authoUser(query, user_id, owner_only=False):
     if not owner_only:
-        if not any([user_id == OWNER_ID, await admin_exist(id)]):
+        if not any([user_id == OWNER_ID, await admin_exist(user_id)]):
             await query.answer("❌ Yᴏᴜ ᴀʀᴇ ɴᴏᴛ Aᴅᴍɪɴ !", show_alert=True)
             return False
     else:
-        if not user_id != OWNER_ID:
+        if user_id != OWNER_ID:
             await query.answer("❌ Yᴏᴜ ᴀʀᴇ ɴᴏᴛ Oᴡɴᴇʀ !", show_alert=True)
             return False
         
