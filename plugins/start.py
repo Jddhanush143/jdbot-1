@@ -28,7 +28,6 @@ async def start_command(client: Client, message: Message):
                 
     text = message.text        
     if len(text)>7:
-        transfer = message.command[1]
         await message.delete()
         try:
             base64_string = text.split(" ", 1)[1]
@@ -106,7 +105,7 @@ async def start_command(client: Client, message: Message):
                     if idx == len(messages) - 1: last_message = copied_msg
                         
         if AUTO_DEL and last_message:
-            asyncio.create_task(auto_del_notification(client.username, last_message, DEL_TIMER, transfer))
+            asyncio.create_task(auto_del_notification(client.username, last_message, DEL_TIMER, message.command[1]))
             
     else:
         # temp_msg = await message.reply("<b>. . .</b>")
