@@ -142,25 +142,26 @@ async def not_joined(client: Client, message: Message):
     temp = await message.reply(f"<b>??</b>")
 	
     user_id = message.from_user.id
-               
-    channels = await get_all_channels()
+        
     buttons = []
     count = 0
 
     try:
-        for id in channels:
-            if not await is_userJoin(client, user_id, id):
-                if id in chat_data_cache:
-                    cname, link = chat_data_cache[id]
+        for chat_id in await get_all_channels():
+            if not await is_userJoin(client, user_id, chat_id):
+                if chat_id in chat_data_cache:
+                    cname, link = chat_data_cache[chat_id]
                 else:
                     try:
-                        data = await client.get_chat(id)
+                        data = await client.get_chat(chat_id)
                         link = data.invite_link 
                         cname = data.title
 			    
-                        chat_data_cache[id] = (cname, link)    
+                        chat_data_cache[chat_id] = (cname, link)
+                            
                     except Exception as e:
-                        print(f"Can't Export Channel Name and Link..., Please Check If the Bot is admin in the FORCE SUB CHANNELS:\nProvided Force sub Channel:- {id}")
+                        print(f"Can't Export Channel Name and Link..., Please Check If the Bot is admin in the FORCE SUB CHANNELS:\nProvided Force sub Channel:- {chat_id}")
+
                         return await temp.edit(f"<blockquote><b><i>! Eʀʀᴏʀ, Cᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ ᴛᴏ sᴏʟᴠᴇ ᴛʜᴇ ɪssᴜᴇs @Shidoteshika1</i></b></blockquote>\n\n<blockquote><b>Rᴇᴀsᴏɴ:</b> {e}</blockquote>")
                                                               
                 buttons.append([InlineKeyboardButton(text=cname, url=link)])
