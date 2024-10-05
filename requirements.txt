@@ -5,11 +5,11 @@ pyromod==1.5
 
 # --- For-Database ------------ #
 #pymongo==4.5.0
-dnspython==2.3.0
+dnspython>=2.6.1
 motor==3.2.0  # Async driver for MongoDB
 
 # --- For-Web-Response ------- #
-aiohttp==3.8.5
+aiohttp>=3.10.2
 
 # --- Advance-Format --- #
 pyrofork==3.1.0
