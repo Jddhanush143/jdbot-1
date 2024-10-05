@@ -1,15 +1,15 @@
 # --- For-Bot-Working --------- #
-pyrogram==2.0.106
-TgCrypto==1.2.3
+pyrogram
+TgCrypto
 pyromod==1.5
 
 # --- For-Database ------------ #
-pymongo>=4.6.3
-dnspython>=2.6.1
-motor==3.2.0  # Async driver for MongoDB
+pymongo
+dnspython
+motor  # Async driver for MongoDB
 
 # --- For-Web-Response ------- #
-aiohttp>=3.10.2
+aiohttp
 
 # --- Advance-Format --- #
 pyrofork
