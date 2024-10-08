@@ -139,7 +139,7 @@ async def not_joined(client: Client, message: Message):
     count = 0
 
     try:
-        for total, chat_id in await enumerate(await get_all_channels(), start=1):
+        for total, chat_id in enumerate(await get_all_channels(), start=1):
             if not await is_userJoin(client, user_id, chat_id):
                 if chat_id in chat_data_cache:
                     cname, link = chat_data_cache[chat_id]
