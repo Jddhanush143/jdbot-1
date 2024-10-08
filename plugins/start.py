@@ -73,9 +73,8 @@ async def start_command(client: Client, message: Message):
         for idx, msg in enumerate(messages):
             if bool(CUSTOM_CAPTION) & bool(msg.document):
                 caption = CUSTOM_CAPTION.format(previouscaption = "" if not msg.caption else msg.caption.html, filename = msg.document.file_name)
-            elif HIDE_CAPTION:
-                if msg.document or msg.audio: caption = ""
-                else: caption = "" if not msg.caption else msg.caption.html
+            elif HIDE_CAPTION and (msg.document or msg.audio):
+                caption = ""
             else:
                 caption = "" if not msg.caption else msg.caption.html
 
@@ -86,7 +85,7 @@ async def start_command(client: Client, message: Message):
                     
             try:
                 copied_msg = await msg.copy(chat_id=id, caption=caption, parse_mode=ParseMode.HTML, reply_markup=reply_markup, protect_content=PROTECT_MODE)
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(0.1)
 
                 if AUTO_DEL:
                     asyncio.create_task(delete_message(copied_msg, DEL_TIMER))
@@ -95,7 +94,7 @@ async def start_command(client: Client, message: Message):
             except FloodWait as e:
                 await asyncio.sleep(e.x)
                 copied_msg = await msg.copy(chat_id=id, caption=caption, parse_mode=ParseMode.HTML, reply_markup=reply_markup, protect_content=PROTECT_MODE)
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(0.1)
 
                 if AUTO_DEL:
                     asyncio.create_task(delete_message(copied_msg, DEL_TIMER))
@@ -143,7 +142,7 @@ async def not_joined(client: Client, message: Message):
     count = 0
 
     try:
-        for chat_id in await get_all_channels():
+        for total, chat_id in await enumerate(get_all_channels(), start=1):
             if not await is_userJoin(client, user_id, chat_id):
                 if chat_id in chat_data_cache:
                     cname, link = chat_data_cache[chat_id]
@@ -177,7 +176,8 @@ async def not_joined(client: Client, message: Message):
                 username=None if not message.from_user.username else '@' + message.from_user.username,
                 mention=message.from_user.mention,
                 id=message.from_user.id,
-                count=count
+                count=count,
+		total=total
             ),
             reply_markup=InlineKeyboardMarkup(buttons),
             #quote=True,
