@@ -139,7 +139,7 @@ async def not_joined(client: Client, message: Message):
     count = 0
 
     try:
-        for total, chat_id in await enumerate(get_all_channels(), start=1):
+        for total, chat_id in await enumerate(await get_all_channels(), start=1):
             if not await is_userJoin(client, user_id, chat_id):
                 if chat_id in chat_data_cache:
                     cname, link = chat_data_cache[chat_id]
@@ -154,7 +154,7 @@ async def not_joined(client: Client, message: Message):
                     except Exception as e:
                         print(f"Can't Export Channel Name and Link..., Please Check If the Bot is admin in the FORCE SUB CHANNELS:\nProvided Force sub Channel:- {chat_id}")
 
-                        return await temp.edit(f"<blockquote><b><i>! Eʀʀᴏʀ, Cᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ ᴛᴏ sᴏʟᴠᴇ ᴛʜᴇ ɪssᴜᴇs @Shidoteshika1</i></b></blockquote>\n\n<blockquote><b>Rᴇᴀsᴏɴ:</b> {e}</blockquote>")
+                        return await temp.edit(f"<b><i>! Eʀʀᴏʀ, Cᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ ᴛᴏ sᴏʟᴠᴇ ᴛʜᴇ ɪssᴜᴇs @Shidoteshika1</i>\n<blockquote>Rᴇᴀsᴏɴ:</b> {e}</blockquote>")
                                                               
                 buttons.append([InlineKeyboardButton(text=cname, url=link)])
                 count += 1
@@ -186,7 +186,7 @@ async def not_joined(client: Client, message: Message):
                         
     except Exception as e:
         print(f"Unable to perform forcesub buttons reason : {e}")
-        return await temp.edit(f"<blockquote><b><i>! Eʀʀᴏʀ, Cᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ ᴛᴏ sᴏʟᴠᴇ ᴛʜᴇ ɪssᴜᴇs @Shidoteshika1</i></b></blockquote>\n\n<blockquote><b>Rᴇᴀsᴏɴ:</b> {e}</blockquote>")
+        return await temp.edit(f"<b><i>! Eʀʀᴏʀ, Cᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ ᴛᴏ sᴏʟᴠᴇ ᴛʜᴇ ɪssᴜᴇs @Shidoteshika1</i>\n<blockquote>Rᴇᴀsᴏɴ:</b> {e}</blockquote>")
 
 
 #=====================================================================================##
@@ -205,7 +205,7 @@ async def restart_bot(client: Client, message: Message):
         os.execl(sys.executable, *args)
     except Exception as e:
         print(f"Error occured while Restarting the bot: {e}")
-        return await msg.edit_text(f"<blockquote><b><i>! Eʀʀᴏʀ, Cᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ ᴛᴏ sᴏʟᴠᴇ ᴛʜᴇ ɪssᴜᴇs @Shidoteshika1</i></b></blockquote>\n\n<blockquote><b>Rᴇᴀsᴏɴ:</b> {e}</blockquote>")
+        return await msg.edit_text(f"<b><i>! Eʀʀᴏʀ, Cᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ ᴛᴏ sᴏʟᴠᴇ ᴛʜᴇ ɪssᴜᴇs @Shidoteshika1</i>\n<blockquote>Rᴇᴀsᴏɴ:</b> {e}</blockquote>")
     #Optionally, you can add cleanup tasks here
     #subprocess.Popen([sys.executable, "main.py"])  # Adjust this if your start file is named differently
     #sys.exit()
