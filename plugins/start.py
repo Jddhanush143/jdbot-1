@@ -14,7 +14,7 @@ from helper_func import banUser, is_userJoin, is_admin, subscribed, encode, deco
 from database.database import * 
 import subprocess
 import sys
-from plugins.advance_features import convert_time, auto_del_notification, delete_message
+from plugins.advance_features import auto_del_notification, delete_message
 from plugins.FORMATS import START_MSG, FORCE_MSG
 
 @Bot.on_message(filters.command('start') & filters.private & ~banUser & subscribed)
@@ -29,10 +29,9 @@ async def start_command(client: Client, message: Message):
     text = message.text        
     if len(text)>7:
         await message.delete()
-        try:
-            base64_string = text.split(" ", 1)[1]
-        except:
-            return
+
+        try: base64_string = text.split(" ", 1)[1]
+        except: return
                 
         string = await decode(base64_string)
         argument = string.split("-")
@@ -104,8 +103,6 @@ async def start_command(client: Client, message: Message):
             asyncio.create_task(auto_del_notification(client.username, last_message, DEL_TIMER, message.command[1]))
             
     else:
-        # temp_msg = await message.reply("<b>. . .</b>")
-        # await temp_msg.delete()
             
         reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton('🤖 Aʙᴏᴜᴛ ᴍᴇ', callback_data= 'about'), InlineKeyboardButton('Sᴇᴛᴛɪɴɢs ⚙️', callback_data='setting')]])
         await message.reply_photo(
@@ -177,7 +174,7 @@ async def not_joined(client: Client, message: Message):
                 mention=message.from_user.mention,
                 id=message.from_user.id,
                 count=count,
-		total=total
+                total=total
             ),
             reply_markup=InlineKeyboardMarkup(buttons),
             #quote=True,

@@ -2,10 +2,10 @@
 
 from bot import Bot
 import asyncio
-from pyrogram.enums import ParseMode, ChatAction
+from pyrogram.enums import ChatAction
 from helper_func import is_admin, banUser
 from plugins.FORMATS import autodel_cmd_pic, files_cmd_pic, on_txt, off_txt, FILES_CMD_TXT, AUTODEL_CMD_TXT
-from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
+from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from config import OWNER_ID
 from pyrogram import Client, filters
 from database.database import add_channel, del_channel, get_all_channels, add_admin, del_admin, get_all_admins, get_del_timer, get_auto_delete, get_hide_caption, get_protect_content, get_channel_button, get_channel_button_link, add_ban_user, del_ban_user, get_ban_users
