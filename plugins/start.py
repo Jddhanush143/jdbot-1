@@ -64,9 +64,7 @@ async def start_command(client: Client, message: Message):
         try: messages = await get_messages(client, ids)
         except: return await message.reply("<b><i>Sᴏᴍᴇᴛʜɪɴɢ ᴡᴇɴᴛ ᴡʀᴏɴɢ..!</i></b>")
             
-        settings = await asyncio.gather(get_auto_delete(), get_del_timer(), get_hide_caption(), get_channel_button(), get_protect_content())
-        AUTO_DEL, DEL_TIMER, HIDE_CAPTION, CHNL_BTN, PROTECT_MODE = settings 
-            
+        AUTO_DEL, DEL_TIMER, HIDE_CAPTION, CHNL_BTN, PROTECT_MODE = await asyncio.gather(get_auto_delete(), get_del_timer(), get_hide_caption(), get_channel_button(), get_protect_content())
         if CHNL_BTN: button_name, button_link = await get_channel_button_link()
         
         for idx, msg in enumerate(messages):
