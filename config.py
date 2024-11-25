@@ -24,9 +24,9 @@ OWNER_ID = int(os.environ.get("OWNER_ID", "1357978966"))
 PORT = os.environ.get("PORT", "8080")
 
 #Database --⚠️ REQUIRED--
-DB_URI = os.environ.get("DATABASE_URL", "mongodb+srv://jddhanush22:jayaraman143@cluster0.b7w8f3d.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+DB_URI = os.environ.get("DATABASE_URL", "mongodb+srv://temptesting1:testing1@cluster0.kspizla.mongodb.net/?retryWrites=true&w=majority")
 
-DB_NAME = os.environ.get("DATABASE_NAME", "adbotv2Xlight")
+DB_NAME = os.environ.get("DATABASE_NAME", "adbotv2XlightXtest")
 
 TG_BOT_WORKERS = int(os.environ.get("TG_BOT_WORKERS", "4"))
 
