@@ -7,6 +7,7 @@ from config import OWNER_ID, PICS
 from plugins.advance_features import convert_time
 from database.database import *
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, InputMediaPhoto
+from plugins import flink  
     
 async def fileSettings(getfunc, setfunc=None, delfunc=False) :
     btn_mode, txt_mode, pic_mode = '❌', off_txt, off_pic
@@ -323,6 +324,33 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                 except:
                     await client.send_message(id, text=f"<b>! Eʀʀᴏʀ Oᴄᴄᴜʀᴇᴅ..\n<blockquote><i>Rᴇᴀsᴏɴ: 1 minute Time out ..</i></b></blockquote>", disable_notification=True)
                     print(f"! Error Occured on callback data = 'set_timer' -> Rᴇᴀsᴏɴ: 1 minute Time out ..")
+
+    # Condition part for flink handling ...................
+    # Before write condtion code you have to import flink modeul like below at top
+    # from plugins import flink            
+
+    elif data == 'flink:status':
+        user_id = query.from_user.id
+
+        try:
+            await query.message.edit_text("<b><i>🔄 Rᴇғʀᴇsʜɪɴɢ....</i></b>")
+            await flink.format_status_msg(query.message, user_id)
+        except Exception as e:
+                print(f"! Exception Occured on callback-data ({data}) : {e}")
+
+    
+    elif data == 'flink:change_format':
+        try:
+            await flink.change_flink_format(client, query)
+        except Exception as e:
+            print(f"! Exception Occured on callback-data ({data}) : {e}")
+
+    
+    elif data == 'flink:start':
+        try:
+            await flink.start_flink_process(client, query)
+        except Exception as e:
+            print(f"! Exception Occured on callback-data ({data}) : {e}")
                     
                 
                     
